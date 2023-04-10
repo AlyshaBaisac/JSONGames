@@ -1,12 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+<html>
+  <head>
+    <title>Games</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  
+  <body>
+    <h2>GAMES</h2>
+    <div class="container" id="games-list"></div>
+     
+    <script>
+      fetch("http://jsongames.test/PHP/games.php")
+        .then(response => response.json())
+        .then(data => {
+          const gamesList = document.getElementById("games-list");
+          const games = data.Games;
     
-</body>
+          games.forEach(game => {
+          const gameDiv = document.createElement("div");
+          gameDiv.classList.add("card");
+
+          const frontDiv = document.createElement("div");
+          frontDiv.classList.add("front");
+          gameDiv.appendChild(frontDiv);
+
+          const backDiv = document.createElement("div");
+          backDiv.classList.add("back");
+          gameDiv.appendChild(backDiv);
+
+          frontDiv.innerHTML = `
+          <div class="img">
+            <img class="flip-indicator-front" src="https://top-mmo.fr/wp-content/uploads/2022/09/1663000651_aHR0cHM6Ly93d3cuZ2lueC50di91cGxvYWRzMi9WYWxvcmFudC9uaWdodF9tYXJrZXQvRmE4UHVtQ1dBQUFyOFliLmpwZw.webp.webp" />
+          </div>
+        `;
+
+        backDiv.innerHTML = `
+          <div class="back-content">
+            <img class="game-image" src="${game.Image}">
+            <div class="description">
+              <h3>${game.Title}</h3>
+              <ul>
+                <li><strong>Developer:</strong> ${game.Developer}</li>
+                <li><strong>Publisher:</strong> ${game.Publisher}</li>
+                <li><strong>Release Date:</strong> ${game.Release_Date}</li>
+                <li><strong>Category:</strong> ${game.Category}</li>
+              </ul>
+            </div>
+            <div class="back-overlay"></div>
+          </div>
+        `;
+
+        gamesList.appendChild(gameDiv);
+
+        });
+
+        })
+        .catch(error => console.error(error));
+    </script>
+    
+    
+  </body>
 </html>
